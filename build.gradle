@@ -52,7 +52,7 @@ task gemspec {
 Gem::Specification.new do |spec|
   spec.name          = "${project.name}"
   spec.version       = "${project.version}"
-  spec.authors       = ["sonots"]
+  spec.authors       = ["Naotoshi Seo"]
   spec.summary       = %[Stdout filter plugin for Embulk]
   spec.description   = %[Embulk filter plugin to print embulk records to stdout]
   spec.email         = ["sonots@gmail.com"]
