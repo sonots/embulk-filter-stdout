@@ -1,9 +1,9 @@
 package org.embulk.filter.stdout;
 
 import com.google.common.base.Optional;
+
 import org.embulk.config.Config;
 import org.embulk.config.ConfigDefault;
-import org.embulk.config.ConfigDiff;
 import org.embulk.config.ConfigSource;
 import org.embulk.config.Task;
 import org.embulk.config.TaskSource;
@@ -16,15 +16,17 @@ import org.embulk.spi.Page;
 import org.embulk.spi.Exec;
 import org.embulk.spi.util.PagePrinter;
 import org.embulk.spi.Schema;
-import org.embulk.spi.time.TimestampFormatter;
 import org.embulk.spi.ColumnVisitor;
 
 public class StdoutFilterPlugin
         implements FilterPlugin
 {
     public interface PluginTask
-            extends Task, TimestampFormatter.FormatterTask
+            extends Task
     {
+        @Config("timezone")
+        @ConfigDefault("null")
+        public Optional<String> getTimezone();
     }
 
     @Override
@@ -47,7 +49,7 @@ public class StdoutFilterPlugin
         return new PageOutput() {
             private final PageReader pageReader = new PageReader(inputSchema);
             private final PageBuilder pageBuilder = new PageBuilder(Exec.getBufferAllocator(), outputSchema, output);
-            private final PagePrinter pagePrinter = new PagePrinter(inputSchema, task);
+            private final PagePrinter pagePrinter = new PagePrinter(inputSchema, task.getTimezone().or("UTC"));
             private final ColumnVisitorImpl visitor = new ColumnVisitorImpl(pageBuilder);
 
             @Override
@@ -120,6 +122,15 @@ public class StdoutFilterPlugin
                         pageBuilder.setNull(outputColumn);
                     } else {
                         pageBuilder.setTimestamp(outputColumn, pageReader.getTimestamp(outputColumn));
+                    }
+                }
+
+                @Override
+                public void jsonColumn(Column outputColumn) {
+                    if (pageReader.isNull(outputColumn)) {
+                        pageBuilder.setNull(outputColumn);
+                    } else {
+                        pageBuilder.setJson(outputColumn, pageReader.getJson(outputColumn));
                     }
                 }
             }
