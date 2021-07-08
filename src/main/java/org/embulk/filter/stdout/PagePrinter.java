@@ -130,7 +130,7 @@ class PagePrinter {
             // PageReader with Instant are available from v0.10.13, and org.embulk.spi.Timestamp is deprecated.
             // It is not expected to happen because this plugin is embedded with Embulk v0.10.24+, but falling back just in case.
             // TODO: Remove this fallback in v0.11.
-            logger.warn("embulk-filter-stdout is expected to work with Embulk v0.10.17+.", ex);
+            // logger.warn("embulk-filter-stdout is expected to work with Embulk v0.10.17+.", ex);
             return reader.getTimestamp(column).getInstant();
         }
     }
