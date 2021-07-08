@@ -49,7 +49,8 @@ dependencies {
 }
 
 gem {
-    from("LICENSE.txt")  // Optional -- if you need other files in the gem.
+    from("LICENSE.txt")
+    from("NOTICE")
     authors = [ "Naotoshi Seo" ]
     email = [ "sonots@gmail.com" ]
     // "description" of the gem is copied from "description" of your Gradle project.
