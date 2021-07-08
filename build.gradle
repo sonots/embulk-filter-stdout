@@ -48,6 +48,23 @@ dependencies {
     testCompile "junit:junit:4.13.2"
 }
 
+// This Gradle plugin's POM dependency modification works for "maven-publish" tasks.
+//
+// Note that "uploadArchives" is no longer supported. It is deprecated in Gradle 6 to be removed in Gradle 7.
+// https://github.com/gradle/gradle/issues/3003#issuecomment-495025844
+publishing {
+    publications {
+        embulkPluginMaven(MavenPublication) {  // Publish it with "publishEmbulkPluginMavenPublicationToMavenRepository".
+            from components.java  // Must be "components.java". The dependency modification works only for it.
+        }
+    }
+    repositories {
+        maven {
+            url = "${project.buildDir}/mavenPublishLocal"
+        }
+    }
+}
+
 gem {
     from("LICENSE.txt")
     from("NOTICE")
