@@ -21,8 +21,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compileOnly "org.embulk:embulk-api:0.10.31"
-    compileOnly "org.embulk:embulk-spi:0.10.31"
+    compileOnly "org.embulk:embulk-api:0.10.32"
+    compileOnly "org.embulk:embulk-spi:0.10.32"
 
     compile("org.embulk:embulk-util-config:0.3.1") {
         // Jackson libraries conflict with embulk-core before v0.10.32.
@@ -33,6 +33,7 @@ dependencies {
         exclude group: "com.fasterxml.jackson.datatype", module: "jackson-datatype-jdk8"
         exclude group: "javax.validation", module: "validation-api"
     }
+    compile "org.embulk:embulk-util-timestamp:0.2.1"
 
     // They are once excluded from transitive dependencies of other dependencies,
     // and added explicitly with versions exactly the same with embulk-core:0.10.19.
